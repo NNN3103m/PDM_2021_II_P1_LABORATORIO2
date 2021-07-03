@@ -29,7 +29,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Spinner
-        android:id="@+id/spinnerEnrollFC"
+        android:id="@+id/spinnerEnrollStudent"
         android:layout_width="391dp"
         android:layout_height="33dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -39,7 +39,7 @@
         app:layout_constraintVertical_bias="0.147" />
 
     <Spinner
-        android:id="@+id/spinnerEnroll2"
+        android:id="@+id/spinnerEnrollClass"
         android:layout_width="391dp"
         android:layout_height="33dp"
         app:layout_constraintBottom_toBottomOf="parent"
