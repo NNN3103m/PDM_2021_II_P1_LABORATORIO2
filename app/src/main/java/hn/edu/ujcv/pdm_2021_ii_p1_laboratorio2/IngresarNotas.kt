@@ -24,6 +24,10 @@ class IngresarNotas : AppCompatActivity() {
         btnSaveStntNotes.setOnClickListener{
             SaveStntNotes()
         }
+
+        btnFetchClasses.setOnClickListener{
+            EnrolledClassesFetch()
+        }
     }
 
     fun EnrollmentDataCollect(){
@@ -39,6 +43,22 @@ class IngresarNotas : AppCompatActivity() {
 
         var adapter1 = ArrayAdapter(this,android.R.layout.simple_spinner_item, Accounts)
         spinnerStntToEvaluate.adapter = adapter1
+    }
+
+    fun EnrolledClassesFetch(){
+        var Classes = ArrayList<String>()
+        var ActualClass = spinnerStntToEvaluate.selectedItem.toString().toInt()
+        for (Enrollments in EnrollmentsRealized){
+            if (ActualClass == Enrollments.key.AccNumber ){
+                var ActualClasses : ArrayList<Classes>
+                ActualClasses = Enrollments.value
+                for (ClassesNames in  ActualClasses){
+                    Classes.add(ClassesNames.CName)
+                }
+            }
+        }
+        var ClassAdapter = ArrayAdapter(this,android.R.layout.simple_spinner_item,Classes)
+        spinnerStntClassToEvaluate.adapter = ClassAdapter
     }
 
 
@@ -62,6 +82,8 @@ class IngresarNotas : AppCompatActivity() {
                 }
             }
         }
+                Toast.makeText(applicationContext, "200 ok", Toast.LENGTH_SHORT).show()
+
             }
         }
     }
