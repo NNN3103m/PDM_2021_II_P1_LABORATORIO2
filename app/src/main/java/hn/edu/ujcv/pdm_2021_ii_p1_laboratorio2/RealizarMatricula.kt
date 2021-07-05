@@ -41,9 +41,7 @@ class RealizarMatricula : AppCompatActivity() {
 //                    SaveSpinnerData()
             SaveEnrollData()
         }
-        btnSendEnroll.setOnClickListener{
-//                    SendEnroll()
-        }
+
         btnAddClass.setOnClickListener{
             insertData()
         }
