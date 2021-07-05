@@ -1,5 +1,6 @@
 package hn.edu.ujcv.pdm_2021_ii_p1_laboratorio2
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ArrayAdapter
@@ -10,16 +11,20 @@ import kotlinx.android.synthetic.main.activity_registrar_alumno.*
 class RealizarMatricula : AppCompatActivity() {
     var StntToFetch : HashMap<Int, String> = hashMapOf()
     var ClassToFetch : HashMap<Int, String> = hashMapOf()
+    var EnrollValues : HashMap<Int, String> = hashMapOf()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_realizar_matricula)
 
-//        FetchStudentData()
-//        FetchClassData()
+        FetchStudentData()
+        FetchClassData()
 
         //        Btn Handler
         btnOnBack3.setOnClickListener{onBackPressed()}
-        btnSaveEnroll.setOnClickListener{}
+        btnSaveEnroll.setOnClickListener{
+                    SaveEnroll()
+        }
+        btnRegresarAlumno.setOnClickListener{returnAlumno()}
 
 //      Spinner for Student
         val spinnerStudentToEnroll = findViewById<Spinner>(R.id.spinnerEnrollStudent)
@@ -38,29 +43,40 @@ class RealizarMatricula : AppCompatActivity() {
 
     }
 
-    private fun FetchStudentData(){
+    fun FetchStudentData(){
         var EnrollStudent = ""
         var counter = 0
-        var intent = intent
-        StntToFetch = intent.getSerializableExtra("valores alumno") as HashMap<Int, String>
+        var intentStntFetched = intent
+        StntToFetch = intentStntFetched.getSerializableExtra("valores alumno") as HashMap<Int, String>
 
         for (valor1 in StntToFetch){
             val list1 = valor1.toString().split("|").toTypedArray()
-            EnrollStudent = list1[1]
-//            counter ++
+            EnrollStudent = list1[0]
+            counter ++
         }
     }
 
-    private fun FetchClassData(){
+    fun FetchClassData(){
         var ClassToEnrollStudent = ""
-        var counter = 0
-        var intent2 = intent
-        ClassToFetch = intent2.getSerializableExtra("valores clase") as HashMap<Int, String>
+        var counter2 = 0
+        var intentClassFetched = intent
+        ClassToFetch = intentClassFetched.getSerializableExtra("valores clase") as HashMap<Int, String>
 
         for (valor2 in ClassToFetch){
             val list2 = valor2.toString().split("|").toTypedArray()
-            ClassToEnrollStudent = list2[1]
-//            counter ++
+            ClassToEnrollStudent = list2[0]
+            counter2 ++
         }
+    }
+
+    fun SaveEnroll(){
+        val intent3 = Intent(this,IngresarNotas::class.java)
+        intent3.putExtra("valores matricula", EnrollValues)
+        startActivity(intent3)
+    }
+
+    fun returnAlumno(){
+        val intent4 = Intent(this,RegistrarAlumno::class.java)
+        startActivity(intent4)
     }
 }
