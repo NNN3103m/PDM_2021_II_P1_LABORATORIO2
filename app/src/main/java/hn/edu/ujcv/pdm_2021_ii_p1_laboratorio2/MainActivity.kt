@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
     fun GeneralDataCollect(){
         StntToEnroll = Students.Students
         ClassValues2 = Classes.Classes
-        EnrollmentsRegistered = Students.Enrollment
+        EnrollmentsRegistered = Students.Enrollments
     }
 
     fun RegStnt(){

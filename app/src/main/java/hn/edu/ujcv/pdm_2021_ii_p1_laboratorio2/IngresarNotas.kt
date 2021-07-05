@@ -51,7 +51,7 @@ class IngresarNotas : AppCompatActivity() {
         var itemClass = spinnerStntClassToEvaluate.selectedItem
         var StntToEvaluate = spinnerStntToEvaluate.selectedItem.toString().toInt()
 
-        for (Enrollment in Students.Enrollment){
+        for (Enrollment in Students.Enrollments){
             if ( StntToEvaluate == Enrollment.key.AccNumber ){
                 for (EnrollmentNote in Enrollment.value){
                     if (EnrollmentNote.CName.equals(itemClass)){

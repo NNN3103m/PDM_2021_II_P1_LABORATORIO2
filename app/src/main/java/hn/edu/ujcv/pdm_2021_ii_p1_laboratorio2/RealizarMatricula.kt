@@ -17,12 +17,13 @@ class RealizarMatricula : AppCompatActivity() {
 //    var ClassToFetch : HashMap<Int, String> = hashMapOf()
 //    var EnrollValues : HashMap<Int, String> = hashMapOf()
 //    var number = 0
+        var ListDisplay          : ArrayAdapter<String>? = null
         var StntValues    : HashMap<Int, Students> = hashMapOf()
         var Accounts    : ArrayList<Int> = ArrayList()
         var ClassValues3    : HashMap<Int, Classes> = hashMapOf()
         var ClassesNames     : ArrayList<String> = ArrayList()
         var listItems         : ArrayList<String> = ArrayList()
-        var EnrollValues: HashMap<Students, ArrayList<Classes>> = hashMapOf()
+        var EnrollmentValues: HashMap<Students, ArrayList<Classes>> = hashMapOf()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -90,7 +91,7 @@ class RealizarMatricula : AppCompatActivity() {
 
               val StntToEnroll = StntValues[spinnerEnrollStudent.selectedItem.toString().toInt()]!!
 
-              Students.Enrollment.put(StntToEnroll, ClassList)
+              Students.Enrollments.put(StntToEnroll, ClassList)
 
               Toast.makeText(applicationContext, "Alumno Matriculado", Toast.LENGTH_SHORT).show()
           }
@@ -99,12 +100,12 @@ class RealizarMatricula : AppCompatActivity() {
     fun StntDataCollect(){
           val intentValues = getIntent().extras
 
-          if (intentValues?.get("StntDataEnvoy") != null){
-              StntValues = intentValues["StntDataEnvoy"] as HashMap<Int, Students>
+          if (intentValues?.get("StntToEnroll") != null){
+              StntValues = intentValues["StntToEnroll"] as HashMap<Int, Students>
           }
 
-          for (accNumber in StntValues){
-              Accounts.add(accNumber.value.AccNumber)
+          for (AccNumber in StntValues){
+              Accounts.add(AccNumber.value.AccNumber)
           }
 
           var adapter1 = ArrayAdapter(this,android.R.layout.simple_spinner_item, Accounts)
@@ -132,10 +133,10 @@ class RealizarMatricula : AppCompatActivity() {
         var itemClass = ""
         itemClass = spinnerEnrollClass.selectedItem.toString()
         listItems.add(itemClass)
-//        adapter3?.notifyDataSetChanged()
-//        adapter3 = ArrayAdapter(this,android.R.layout.simple_list_item_1, listItems)
-//        lstView.adapter = adapter3
-//        Snackbar.make(MatriculaLayout, "Item añadido a la lista", Snackbar.LENGTH_LONG).setAction("Deshacer",desHacerOnClickListener).show()
+        ListDisplay?.notifyDataSetChanged()
+        ListDisplay = ArrayAdapter(this,android.R.layout.simple_list_item_1, listItems)
+        ClassList.adapter = ListDisplay
+        Snackbar.make(Enroll, "Clase añadida", Snackbar.LENGTH_LONG).show()
     }
 //    fun FetchStudentData(){
 //        var EnrollStudent = ""

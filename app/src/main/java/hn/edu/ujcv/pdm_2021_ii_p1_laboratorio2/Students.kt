@@ -39,7 +39,7 @@ class Students() : Parcelable {
         }
 
         var Students:HashMap<Int, Students> = hashMapOf()
-        var Enrollment: HashMap<Students, ArrayList<Classes>> = hashMapOf()
+        var Enrollments: HashMap<Students, ArrayList<Classes>> = hashMapOf()
     }
 
     override fun toString(): String {
