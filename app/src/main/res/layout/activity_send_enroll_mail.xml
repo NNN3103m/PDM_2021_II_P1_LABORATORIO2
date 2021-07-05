@@ -8,12 +8,25 @@
     tools:context=".MainActivity">
 
     <!--EditText: Input the recipient-->
+
+    <TextView
+        android:id="@+id/textView"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Elija el alumno matriculado a enviar registro" />
+
+    <Spinner
+        android:id="@+id/spinnerStntEnrollMail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <EditText
         android:id="@+id/recipientEt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/cardview_light_background"
-        android:hint="Recipient email(s)"
+        android:hint="Recipientes email(s)"
         android:inputType="textEmailAddress"
         android:padding="10dp"
         android:textColor="@color/purple_200" />
@@ -24,7 +37,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/cardview_light_background"
-        android:hint="Subject"
+        android:hint="Asunto"
         android:layout_marginTop="2dp"
         android:layout_marginBottom="2dp"
         android:inputType="text|textCapSentences"
@@ -38,7 +51,7 @@
         android:layout_height="wrap_content"
         android:background="@color/cardview_light_background"
         android:gravity="start"
-        android:hint="Enter message here..."
+        android:hint="Ingrese su mensaje"
         android:inputType="text|textCapSentences"
         android:minHeight="150dp"
         android:padding="10dp"
@@ -51,6 +64,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
-        android:text="send Email" />
+        android:text="Enviar Matricula" />
+
+    <Button
+        android:id="@+id/sendFetch"
+        style="@style/Base.Widget.AppCompat.Button.Colored"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:text="Obtener datos alumno" />
 
 </LinearLayout>

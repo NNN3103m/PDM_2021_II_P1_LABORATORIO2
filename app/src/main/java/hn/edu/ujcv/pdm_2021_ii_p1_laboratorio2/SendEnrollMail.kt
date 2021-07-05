@@ -5,13 +5,16 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
-import kotlinx.android.synthetic.main.activity_send_mail.*
+import kotlinx.android.synthetic.main.activity_send_enroll_mail.*
+import android.widget.ArrayAdapter as ArrayAdapter1
 
 class SendEnrollMail : AppCompatActivity() {
+    var ListItems : ArrayList<Int> = ArrayList()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_send_mail)
+        setContentView(R.layout.activity_send_enroll_mail)
 
+        StntFetchData()
         //button click to get input and call sendEmail method
         sendEmailBtn.setOnClickListener {
             //get input from EditTexts and save in variables
@@ -21,9 +24,38 @@ class SendEnrollMail : AppCompatActivity() {
 
             //method call for email intent with these inputs as parameters
             sendEnrollEmail(recipient, subject, message)
+        }
+
+        sendFetch.setOnClickListener{
+            Fetch()
+        }
+
     }
 
-}
+    fun StntFetchData() {
+        for (Account in Students.Enrollments){
+            ListItems.add (Account.key.AccNumber)
+        }
+        var adapterStntData = ArrayAdapter1(this, android.R.layout.simple_list_item_1, ListItems)
+        spinnerStntEnrollMail.adapter = adapterStntData
+    }
+
+    private fun Fetch(){
+        var msg = ""
+        var ClassesDetails = ""
+        var ActualStnt = spinnerStntEnrollMail.selectedItem.toString().toInt()
+        for(Enrollment in Students.Enrollments){
+            if (Enrollment.key.AccNumber == ActualStnt) {
+                messageEt.setText(Enrollment.key.StntMail)
+                for (Classes in Enrollment.value) {
+                    ClassesDetails = ClassesDetails + Classes.toString() + "\n" + "\n"
+                }
+                msg = Enrollment.key.toString()+ "\n" + "\nClases Matriculadas son las siguientes: \n"+ "\n" + ClassesDetails + "\n"
+                messageEt.setText(msg)
+            }
+        }
+    }
+
     private fun sendEnrollEmail(recipient: String, subject: String, message: String) {
         /*ACTION_SEND action to launch an email client installed on your Android device.*/
         val mIntent = Intent(Intent.ACTION_SEND)

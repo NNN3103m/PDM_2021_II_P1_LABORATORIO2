@@ -52,7 +52,7 @@ class Classes () : Parcelable {
         var Classes: HashMap<Int, Classes> = hashMapOf()
     }
 
-    fun imprimirNotas(): String{
+    fun SendNotes(): String{
         return "Clase: $CName\nNota Primer Parcial: $gradesI\nNota Segundo Parcial: $gradesII\nNota Tercer Parcial: $gradesIII\n"
     }
 
