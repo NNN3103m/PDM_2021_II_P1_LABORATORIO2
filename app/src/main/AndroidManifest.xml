@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PDM_2021_II_P1_LABORATORIO2">
-        <activity android:name=".IngresarNotas"></activity>
+        <activity android:name=".SendEnrollMail"></activity>
+        <activity android:name=".IngresarNotas" />
         <activity android:name=".RealizarMatricula" />
         <activity android:name=".RegistrarClase" />
         <activity android:name=".RegistrarAlumno" />

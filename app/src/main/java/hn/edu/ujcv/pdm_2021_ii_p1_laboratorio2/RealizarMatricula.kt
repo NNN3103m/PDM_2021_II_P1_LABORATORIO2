@@ -1,82 +1,203 @@
 package hn.edu.ujcv.pdm_2021_ii_p1_laboratorio2
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_realizar_matricula.*
 import kotlinx.android.synthetic.main.activity_registrar_alumno.*
+import java.lang.StringBuilder
 
 class RealizarMatricula : AppCompatActivity() {
-    var StntToFetch : HashMap<Int, String> = hashMapOf()
-    var ClassToFetch : HashMap<Int, String> = hashMapOf()
-    var EnrollValues : HashMap<Int, String> = hashMapOf()
+//    val StntValues=intent.getStringExtra("valores alumno")
+//    var StntToFetch : HashMap<Int, String> = hashMapOf()
+//    var ClassToFetch : HashMap<Int, String> = hashMapOf()
+//    var EnrollValues : HashMap<Int, String> = hashMapOf()
+//    var number = 0
+        var StntValues    : HashMap<Int, Students> = hashMapOf()
+        var Accounts    : ArrayList<Int> = ArrayList()
+        var ClassValues3    : HashMap<Int, Classes> = hashMapOf()
+        var ClassesNames     : ArrayList<String> = ArrayList()
+        var listItems         : ArrayList<String> = ArrayList()
+        var EnrollValues: HashMap<Students, ArrayList<Classes>> = hashMapOf()
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_realizar_matricula)
 
-        FetchStudentData()
-        FetchClassData()
+        StntDataCollect()
+        ClassDataCollect()
+//        FetchStudentData()
+//        FetchClassData()
 
         //        Btn Handler
         btnOnBack3.setOnClickListener{onBackPressed()}
-        btnSaveEnroll.setOnClickListener{
-                    SaveEnroll()
+        btnSaveSpinnerData.setOnClickListener(){
+//                    SaveSpinnerData()
+            SaveEnrollData()
         }
-        btnRegresarAlumno.setOnClickListener{returnAlumno()}
+        btnSendEnroll.setOnClickListener{
+//                    SendEnroll()
+        }
+        btnAddClass.setOnClickListener{
+            insertData()
+        }
+//        btnRegresarAlumno.setOnClickListener{returnAlumno()}
 
 //      Spinner for Student
-        val spinnerStudentToEnroll = findViewById<Spinner>(R.id.spinnerEnrollStudent)
-        val list1 = listOf("Elija un Estudiante", StntToFetch)
-
-        val adaptador1 = ArrayAdapter(this,android.R.layout.simple_spinner_item, list1)
-        spinnerStudentToEnroll.adapter = adaptador1
+//        val spinnerStudentToEnroll = findViewById<Spinner>(R.id.spinnerEnrollStudent)
+//        val list1 = listOf("Elija un Estudiante", StntToFetch)
+//
+//        val adaptador1 = ArrayAdapter(this,android.R.layout.simple_spinner_item, list1)
+//        spinnerStudentToEnroll.adapter = adaptador1
 
 
 //      Spinner for Class
-        val spinnerClassToStudent = findViewById<Spinner>(R.id.spinnerEnrollClass)
-        val list2 = listOf("Elija la clase", ClassToFetch)
+//        val classList = resources.getStringArray(R.array.class_list)
+//        val spinnerClass = findViewById<Spinner>(R.id.spinnerEnrollClass)
+//        if (spinnerClass != null) {
+//            val adapter2 = ArrayAdapter(this,
+//                android.R.layout.simple_spinner_item, classList)
+//            spinnerClass.adapter = adapter2
 
-        val adaptador2 = ArrayAdapter(this,android.R.layout.simple_spinner_item, list2)
-        spinnerClassToStudent.adapter = adaptador2
+
+//        val spinnerClassToStudent = findViewById<Spinner>(R.id.spinnerEnrollClass)
+//        val list2 = listOf("Elija la clase", ClassToFetch)
+//
+//        val adaptador2 = ArrayAdapter(this,android.R.layout.simple_spinner_item, list2)
+//        spinnerClassToStudent.adapter = adaptador2
 
     }
 
-    fun FetchStudentData(){
-        var EnrollStudent = ""
-        var counter = 0
-        var intentStntFetched = intent
-        StntToFetch = intentStntFetched.getSerializableExtra("valores alumno") as HashMap<Int, String>
 
-        for (valor1 in StntToFetch){
-            val list1 = valor1.toString().split("|").toTypedArray()
-            EnrollStudent = list1[0]
-            counter ++
-        }
+    fun SaveEnrollData(){
+          if (listItems.size == 0){
+              Toast.makeText(applicationContext, "Registre una clase", Toast.LENGTH_SHORT).show()
+          }
+          else {
+              val ClassList = ArrayList<Classes>()
+              for (Class in ClassValues3){
+                  for (item in listItems){
+                      if (Class.value.CName.equals(item)){
+                          ClassList.add(Class.value)
+                      }
+                  }
+              }
+
+              val StntToEnroll = StntValues[spinnerEnrollStudent.selectedItem.toString().toInt()]!!
+
+              Students.Enrollment.put(StntToEnroll, ClassList)
+
+              Toast.makeText(applicationContext, "Alumno Matriculado", Toast.LENGTH_SHORT).show()
+          }
     }
 
-    fun FetchClassData(){
-        var ClassToEnrollStudent = ""
-        var counter2 = 0
-        var intentClassFetched = intent
-        ClassToFetch = intentClassFetched.getSerializableExtra("valores clase") as HashMap<Int, String>
+    fun StntDataCollect(){
+          val intentValues = getIntent().extras
 
-        for (valor2 in ClassToFetch){
-            val list2 = valor2.toString().split("|").toTypedArray()
-            ClassToEnrollStudent = list2[0]
-            counter2 ++
-        }
+          if (intentValues?.get("StntDataEnvoy") != null){
+              StntValues = intentValues["StntDataEnvoy"] as HashMap<Int, Students>
+          }
+
+          for (accNumber in StntValues){
+              Accounts.add(accNumber.value.AccNumber)
+          }
+
+          var adapter1 = ArrayAdapter(this,android.R.layout.simple_spinner_item, Accounts)
+          spinnerEnrollStudent.adapter = adapter1
     }
 
-    fun SaveEnroll(){
-        val intent3 = Intent(this,IngresarNotas::class.java)
-        intent3.putExtra("valores matricula", EnrollValues)
-        startActivity(intent3)
+
+    fun  ClassDataCollect(){
+          val intentValues = getIntent().extras
+
+          if (intentValues?.get("ClassValues2") !=null){
+              ClassValues3 = intentValues["ClassValues2"] as HashMap<Int, Classes>
+          }
+
+          for (cName in ClassValues3){
+              ClassesNames.add(cName.value.CName)
+          }
+
+          var adapter2 = ArrayAdapter(this,android.R.layout.simple_spinner_item, ClassesNames)
+          spinnerEnrollClass.adapter = adapter2
     }
 
-    fun returnAlumno(){
-        val intent4 = Intent(this,RegistrarAlumno::class.java)
-        startActivity(intent4)
+    fun insertData(){
+
+        var itemClass = ""
+        itemClass = spinnerEnrollClass.selectedItem.toString()
+        listItems.add(itemClass)
+//        adapter3?.notifyDataSetChanged()
+//        adapter3 = ArrayAdapter(this,android.R.layout.simple_list_item_1, listItems)
+//        lstView.adapter = adapter3
+//        Snackbar.make(MatriculaLayout, "Item añadido a la lista", Snackbar.LENGTH_LONG).setAction("Deshacer",desHacerOnClickListener).show()
     }
+//    fun FetchStudentData(){
+//        var EnrollStudent = ""
+//        var counter = 0
+//        var intentStntFetched = intent
+//        StntToFetch = intentStntFetched.getSerializableExtra("valores alumno") as HashMap<Int, String>
+//
+//        for (valor1 in StntToFetch){
+//            val list1 = valor1.toString().split("|").toTypedArray()
+//            EnrollStudent = list1[0]
+//            counter ++
+//        }
+//    }
+
+//    fun FetchClassData(){
+//        var ClassToEnrollStudent = ""
+//        var counter2 = 0
+//        var intentClassFetched = intent
+//        ClassToFetch = intentClassFetched.getSerializableExtra("valores clase") as HashMap<Int, String>
+//
+//        for (valor2 in ClassToFetch){
+//            val list2 = valor2.toString().split("|").toTypedArray()
+//            ClassToEnrollStudent = list2[0]
+//            counter2 ++
+//        }
+//    }
+
+
+
+
+//    fun returnAlumno(){
+//        val intent4 = Intent(this,RegistrarAlumno::class.java)
+//        startActivity(intent4)
+//    }
+
+
+//    fun SaveSpinnerData(){
+//        val EnrollDataClass = StringBuilder()
+//        numberE +=1
+//        val dataEnrollStnt: String = spinnerEnrollStudent.getSelectedItem().toString()
+//        val dataEnrollClass: String = spinnerEnrollClass.getSelectedItem().toString()
+//        EnrollValuesData.put(numberE, EnrollDataClass.toString())
+//    }
+//
+//    fun SendEnroll(){
+//        val intent3 = Intent(this,SendMail::class.java)
+//        intent3.putExtra("valores matricula", EnrollValues)
+//        startActivity(intent3)
+//    }
+
+
+//    private fun FetchStudentData() {
+//        var EnrollStudent = ""
+//        var counter = 0
+//        var intentStntFetched = intent
+//        StntToFetch = intentStntFetched.getSerializableExtra("valores alumno") as HashMap<Int, String>
+//
+//        for (valor1 in StntToFetch){
+//            val list1 = valor1.toString().split("|").toTypedArray()
+//            EnrollStudent = list1[0]
+//            counter ++
+//        }
+//    }
 }
+

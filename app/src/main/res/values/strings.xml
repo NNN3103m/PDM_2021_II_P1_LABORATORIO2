@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">PDM_2021_II_P1_LABORATORIO2</string>
+
+    <string-array name="class_list">
+        <item>Dispositivos Moviles</item>
+        <item>Analisis Numerico</item>
+        <item>Auditoria de Sistemas</item>
+        <item>Ingles VII</item>
+        <item>Programacion II</item>
+        <item>Español</item>
+    </string-array>
 </resources>

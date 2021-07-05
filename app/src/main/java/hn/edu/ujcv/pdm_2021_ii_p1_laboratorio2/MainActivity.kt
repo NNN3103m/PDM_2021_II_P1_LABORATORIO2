@@ -6,15 +6,29 @@ import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
+
+    var StntToEnroll: HashMap<Int, Students>? = hashMapOf()
+    var ClassValues2 : HashMap<Int, Classes>? = hashMapOf()
+    var EnrollmentsRegistered: HashMap<Students, ArrayList<Classes>> = hashMapOf()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        GeneralDataCollect()
 //      Menu Handler
         btnRegStnt.setOnClickListener{RegStnt()}
         btnRegClass.setOnClickListener{RegClass()}
         btnMkEnroll.setOnClickListener{MkEnroll()}
         btnEnterNotes.setOnClickListener{EnterNotes()}
+        btnSendMailEnroll.setOnClickListener{SendMailEnroll()}
+        btnSendMailNotes.setOnClickListener{SendMailNotes()}
+    }
+
+    fun GeneralDataCollect(){
+        StntToEnroll = Students.Students
+        ClassValues2 = Classes.Classes
+        EnrollmentsRegistered = Students.Enrollment
     }
 
     fun RegStnt(){
@@ -29,11 +43,24 @@ class MainActivity : AppCompatActivity() {
 
     fun MkEnroll(){
         val intent = Intent(this,RealizarMatricula::class.java)
+        intent.putExtra("StntToEnroll", StntToEnroll)
+        intent.putExtra("ClassValues2" , ClassValues2)
         startActivity(intent)
     }
 
     fun EnterNotes(){
         val intent = Intent(this,IngresarNotas::class.java)
+        intent.putExtra("EnrollmentsRegistered",EnrollmentsRegistered)
+        startActivity(intent)
+    }
+
+    fun SendMailEnroll() {
+        val intent = Intent(this,SendEnrollMail::class.java)
+        startActivity(intent)
+    }
+
+    fun SendMailNotes() {
+        val intent = Intent(this,SendEnrollMail::class.java)
         startActivity(intent)
     }
 }
